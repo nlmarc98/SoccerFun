@@ -1,0 +1,5 @@
+|isKeeper me
+	|inPenaltyArea field home me.pos 
+		| i_am_close_to_the_ball=(kick_the_ball,   new_memory)
+		| otherwise					= (turn_to_face goal, new_memory)
+	| otherwise					= (run_to_the_ball, new_memory)
