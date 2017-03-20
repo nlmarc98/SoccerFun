@@ -3,3 +3,6 @@
 		| i_am_close_to_the_ball=(kick_the_ball,   new_memory)
 		| otherwise					= (turn_to_face goal, new_memory)
 	| otherwise					= (run_to_the_ball, new_memory)
+
+
+	i_am_near_the_ball		= toReal (dist me ball) < (0.25 * toReal field.fwidth)
