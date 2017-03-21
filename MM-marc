@@ -1,0 +1,199 @@
+implementation module TeamMM
+
+import StdEnv, StdIO, Footballer, FootballerFunctions
+
+Team_MM :: !Home !FootballField -> Team
+Team_MM home field
+|	home==West				= westTeam
+|	otherwise				= eastTeam
+where
+	eastTeam				= mirror field westTeam
+	westTeam				= [keeper : fielders]
+	clubname				= base_TeamName_MM +++ if (home == West) "W" "E"
+	keeper					= MM clubname home field {zero & px=scale -0.50 field.flength} 1
+	fielders				= [  MM clubname home field {px=scale (-0.5*dx) field.flength,py=scale (0.5*dy) field.fwidth} nr
+							  \\ (dx,dy) <- west_positions_fielders
+							   & nr      <- [2..]
+							  ]
+	west_positions_fielders	= [(0.20, 0.40)//2
+							  ,(0.17,-0.35)//3
+							  ,(0.23, 0.00)//4	
+							  ,(0.80, 0.45)//5
+							  ,(0.50,-0.45)//6
+							  ,(0.60, 0.00)//7
+							  ,(0.50, 0.30)//8
+							  ,(0.80,-0.50)//9
+							  ,(0.75, 0.30)//10
+							  ,(0.75,-0.30)//11
+							  ]
+							  
+base_TeamName_MM		:: String
+base_TeamName_MM	= "MM"							  
+
+:: MMMemory				= { home :: !Home }
+
+MM :: !ClubName !Home !FootballField !Position !PlayersNumber -> Footballer
+MM club home field position nr
+	= { playerID			= {clubName=club,playerNr=nr}
+	  , name				=  name nr
+	  , length				= length nr
+	  , pos					= position
+	  , nose				= zero
+	  , speed				= zero
+	  , skills				= Skill nr
+	  , effect				= Nothing
+	  , stamina				= max_stamina
+	  , health				= max_health
+	  , brain				= { memory = {home=home}, ai = mmbrain field }
+	  }	  
+
+where 
+ 	name nr 
+ 	|nr==1="MaMa"
+ 	|nr ==2="Madelief"
+ 	|nr ==3="Marc"
+ 	|nr==4="Max"
+ 	|nr==5="Jill"
+ 	|nr==6="Coen"
+ 	|nr==7="Fu-Rianne"
+ 	|nr==8="Vera"
+ 	|nr==9="Victor"
+ 	|nr==10="Bas"
+ 	|nr==11="Kayla"
+ 	
+ 	length nr 
+ 	|nr==1=m 2.1
+ 	|nr ==2=m 2.1
+ 	|nr ==3=m 2.1
+ 	|nr==4=m 2.1
+ 	|nr==5=m 1.6
+ 	|nr==6=m 1.6
+ 	|nr==7=m 1.6
+ 	|nr==8=m 1.6
+ 	|nr==9=m 1.6
+ 	|nr==10=m 2.1
+ 	|nr==11=m 2.1
+ 	
+	Skill nr
+ 	|nr==1=(Catching, Kicking, Jumping)
+ 	|nr ==2=(Running, Kicking, Gaining)
+ 	|nr ==3=(Running, Kicking, Gaining)
+ 	|nr==4=(Running, Kicking, Gaining)
+ 	|nr==5=(Running, Kicking, Gaining)
+ 	|nr==6=(Running, Kicking, Gaining)
+ 	|nr==7=(Running, Kicking, Gaining)
+ 	|nr==8=(Running, Tackling, Gaining)
+ 	|nr==9=(Running, Tackling, Gaining)
+ 	|nr==10=(Running, Tackling,  Gaining)
+ 	|nr==11=(Running, Tackling,  Gaining) 	
+
+
+
+mmbrain :: !FootballField !(!BrainInput,!MMMemory) -> (!BrainOutput,!MMMemory)
+mmbrain field (input=:{referee,me}, memory=:{home})
+|isKeeper me
+	|inPenaltyArea field home me.pos 
+		| i_am_close_to_the_ball =(kick_the_ball,   new_memory)
+		| otherwise				= (turn_to_face goal, new_memory)
+	| otherwise					= (run_to_the_ball, new_memory)
+	
+		
+|(me.playerID.playerNr==4) 
+| i_am_close_to_the_ball
+		| i_can_see goal		= (dribble_with_the_ball,     new_memory)
+		| otherwise				= (turn_to_face goal, new_memory)
+	| i_am_near_the_ball4
+				= (run_to_the_ball,   new_memory)
+	| otherwise					= (dribble_with_the_ball, new_memory)
+	
+		
+| (me.playerID.playerNr==2) 
+| i_am_close_to_the_ball
+		| i_can_see goal		= (kick_the_ball,     new_memory)
+		| otherwise				= (turn_to_face goal, new_memory)
+	| i_am_near_the_ball5
+				= (run_to_the_ball,   new_memory)
+	| otherwise					= (turn_to_face ball, new_memory)	
+	
+|(me.playerID.playerNr==8) || (me.playerID.playerNr==7) || (me.playerID.playerNr==9)
+| i_am_close_to_the_ball
+		| i_can_see goal		= (kick_the_ball,     new_memory)
+		| otherwise				= (turn_to_face goal, new_memory)
+	| i_am_near_the_ball2
+				= (run_to_the_ball,   new_memory)
+	| otherwise					= (turn_to_face ball, new_memory)	
+	
+|(me.playerID.playerNr==3) 
+| i_am_close_to_the_ball
+		| i_can_see goal		= (kick_the_ball,     new_memory)
+		| otherwise				= (turn_to_face goal, new_memory)
+	| i_am_near_the_ball4
+				= (run_to_the_ball,   new_memory)
+	| otherwise					= (turn_to_face ball, new_memory)	
+	
+	
+|(me.playerID.playerNr == 10) || (me.playerID.playerNr == 11)
+	|infront_of_ball
+		= (return_to_own_goal, new_memory) 
+	|ball_richting_goal 
+		=(turn_to_face ball, new_memory) //(return_to_base , new_memory)
+	|otherwise 
+		| i_am_near_the_ball		= (run_to_the_ball,   new_memory)
+		| otherwise					= (turn_to_face ball, new_memory)
+		
+		
+|otherwise
+	| i_am_close_to_the_ball
+		| i_can_see goal		= (kick_the_ball,     new_memory)
+		| otherwise				= (turn_to_face goal, new_memory)
+	| i_am_near_the_ball
+				= (run_to_the_ball,   new_memory)
+	| otherwise					= (turn_to_face ball, new_memory)	
+where
+	new_memory 				= {home=if (any isEndHalf referee) (other home) home}
+	my_direction			= me.nose
+	//brain(input=:{others,me})
+	//where 
+	my_team_direction= me team other
+
+	//my_opponents= me opponents other
+	
+	ball					= getBall input
+	goal					= centerOfGoal (other home) field
+	
+	i_am_close_to_the_ball	= dist me ball < maxKickReach me
+	i_can_see pos			= abs (bearing my_direction me pos) < rad (0.05*pi)
+	
+	//opp_pass=[opp pass || opp <- my_opponent | dist opp.pos me.pos < m 5.0]
+	
+	ball_richting_goal		= ((toReal ball.ballPos.pxy.px) < (-0.25 * toReal field.fwidth) && home==West) || ((toReal ball.ballPos.pxy.px )> (0.25 * toReal field.fwidth) && home==East)
+	infront_of_ball 		= (ball.ballPos.pxy.px < me.pos.px && home==West) || (ball.ballPos.pxy.px > me.pos.px && home==East) 
+	i_am_near_the_ball		= toReal (dist me ball) < (0.30 * toReal field.fwidth)
+	return_to_own_goal		= Move {direction=bearing zero me ball,velocity=speed_of_light} (bearing my_direction me (centerOfGoal home field))
+	run_to_the_ball			= Move {direction=bearing zero me ball,velocity=speed_of_light} zero
+	turn_to_face pos		= Move zero (bearing my_direction me pos)
+	kick_the_ball 			= KickBall {vxy={direction=my_direction,velocity=speed_of_light}, vz=ms 1.0}
+	//dribble_with_the_ball	= Move {direction=my_team_direction,velocity=speed_of_light} zero
+	
+	
+	speed_of_light			= ms 299792458.0
+	return_to_base pos 		= Move {direction=bearing zero me ball,velocity=speed_of_light} (bearing my_direction me pos)
+	i_am_near_the_ball4		= toReal (dist me ball) < (0.30 * toReal field.fwidth)
+	i_am_near_the_ball5	= toReal (dist me ball) < (0.20 * toReal field.fwidth)
+	i_am_near_the_ball3		= toReal (dist me ball) < (0.15 * toReal field.fwidth)
+	i_am_near_the_ball2		= toReal (dist me ball) < (0.10 * toReal field.fwidth)
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
