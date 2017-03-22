@@ -96,132 +96,61 @@ mmbrain field (input=:{referee,me}, memory=:{home})
 		|otherwise				= (turn_to_face goal, new_memory)
 	| otherwise					= (run_to_the_ball, new_memory)
 	
-|(me.playerID.playerNr == 2) 
-	|in_position 2
+|(me.playerID.playerNr == 2) || (me.playerID.playerNr == 3) || (me.playerID.playerNr == 4)
+	|in_position me.playerID.playerNr
 		|i_am_close_to_the_ball 
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(GainBall, 	new_memory)
 		|in_possesion_of_ball	
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
-		|otherwise 				= (turn_to_face ball, new_memory)
-	|otherwise = (turn_to_face ball, new_memory)
-
-|(me.playerID.playerNr == 3) 
-	|in_position 3
-		|i_am_close_to_the_ball 
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
-		|in_possesion_of_ball	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
-		|otherwise 				= (turn_to_face ball, new_memory)
-	|otherwise = (turn_to_face ball, new_memory)
-
-|(me.playerID.playerNr == 4) 
-	|in_position 4
-		|i_am_close_to_the_ball 
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
-		|in_possesion_of_ball	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball	= (run_to_the_ball,   new_memory)
+		|i_am_near_the_ball1		= (run_to_the_ball,   new_memory)
 		|otherwise 				= (turn_to_face ball, new_memory)
 	|otherwise = (turn_to_face ball, new_memory)
 	
-|(me.playerID.playerNr == 5) 
-	|in_position 5
+|(me.playerID.playerNr == 5)|| (me.playerID.playerNr == 6)
+	|in_position me.playerID.playerNr
 		|i_am_close_to_the_ball 
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(GainBall, 	new_memory)
 		|in_possesion_of_ball	
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
-		|otherwise 				= (turn_to_face ball, new_memory)
-	|otherwise = (turn_to_face ball, new_memory)
-
-|(me.playerID.playerNr == 6) 
-	|in_position 6
-		|i_am_close_to_the_ball 
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
-		|in_possesion_of_ball	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
+		|i_am_near_the_ball2		= (run_to_the_ball,   new_memory)
 		|otherwise 				= (turn_to_face ball, new_memory)
 	|otherwise = (turn_to_face ball, new_memory)
 	
-	|(me.playerID.playerNr == 7) 
-	|in_position 7
+|(me.playerID.playerNr == 7) 
+	|in_position me.playerID.playerNr
 		|i_am_close_to_the_ball 
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
+				|otherwise			=(GainBall, 	new_memory)
 		|in_possesion_of_ball	
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
+		|i_am_near_the_ball3		= (run_to_the_ball,   new_memory)
 		|otherwise 				= (turn_to_face ball, new_memory)
 	|otherwise = (turn_to_face ball, new_memory)	
 	
-	|(me.playerID.playerNr == 8) 
-	|in_position 8
+|(me.playerID.playerNr == 8) || (me.playerID.playerNr == 9) || 
+	(me.playerID.playerNr == 10 )|| (me.playerID.playerNr == 11)
+	|in_position me.playerID.playerNr
 		|i_am_close_to_the_ball 	
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(GainBall, 	new_memory)
 		|in_possesion_of_ball	
 			|i_can_see goal 	=(kick_the_ball,   new_memory)
 			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball	= (run_to_the_ball,   new_memory)
+		|i_am_near_the_ball4	= (run_to_the_ball,   new_memory)
 		|otherwise 				= (turn_to_face ball, new_memory)
 	|otherwise = (turn_to_face ball, new_memory)
-	
-	|(me.playerID.playerNr == 9) 
-	|in_position 9
-		|i_am_close_to_the_ball 	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
-		|in_possesion_of_ball	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball	= (run_to_the_ball,   new_memory)
-		|otherwise 				= (turn_to_face ball, new_memory)
-	|otherwise = (turn_to_face ball, new_memory)
-	
-	|(me.playerID.playerNr == 10) 
-	|in_position 10
-		|i_am_close_to_the_ball 	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
-		|in_possesion_of_ball	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
-		|otherwise 				= (turn_to_face ball, new_memory)
-	|otherwise = (turn_to_face ball, new_memory)
-	
-	| (me.playerID.playerNr == 11)
-	|in_position 11
-		|i_am_close_to_the_ball 
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(GainBall, 	new_memory)
-		|in_possesion_of_ball	
-			|i_can_see goal 	=(kick_the_ball,   new_memory)
-			|otherwise			=(turn_to_face goal, new_memory)
-		|i_am_near_the_ball		= (run_to_the_ball,   new_memory)
-		|otherwise 				= (turn_to_face ball, new_memory)
-	|otherwise = (turn_to_face ball, new_memory)
+
 		
 |otherwise
 	| i_am_close_to_the_ball
 		| i_can_see goal		= (kick_the_ball,     new_memory)
 		| otherwise				= (turn_to_face goal, new_memory)
-	| i_am_near_the_ball
-								= (run_to_the_ball, new_memory)
+	| i_am_near_the_ball		= (run_to_the_ball, new_memory)
 	| otherwise					= (turn_to_face ball, new_memory)	
 where
 
@@ -243,7 +172,9 @@ where
 	turn_to_face pos		= Move zero (bearing my_direction me pos)
 	kick_the_ball 			= KickBall {vxy={direction=my_direction,velocity=speed_of_light}, vz=ms 1.0}
 	speed_of_light			= ms 299792458.0
-	return_to pos 		= Move {direction=bearing zero me ball,velocity=speed_of_light} (bearing my_direction me pos)
+	return_to pos 			= Move {direction=bearing zero me ball,velocity=speed_of_light} (bearing my_direction me pos)
+	kickers me others		= [Tackle footballer maxVelocityBallKick \\ footballer <- others | inRadiusOfFootballer me.pos footballer]
+ 
 	
 	pos_width y				=  (0.5*y) *  toReal(field.fwidth)
 	pos_length x			=  (-0.5*x) * toReal(field.flength)
@@ -251,9 +182,6 @@ where
 	in_position nr 			= 	(toReal(ball.ballPos.pxy.px) >= (pos_length (x_min nr))) && (toReal (ball.ballPos.pxy.px) <= (pos_length (x_max nr))) && 
 								(toReal(ball.ballPos.pxy.py) >= (pos_width (y_min nr))) && (toReal(ball.ballPos.pxy.py) <= (pos_width (y_max nr)))
 								
-								//(me.pos.px > (pos_length (x_max nr))) && (me.pos.px < (pos_length (x_min nr))) && 
-								//(me.pos.py > (pos_width (y_max nr))) && (me.pos.py < (pos_width (y_min nr)))
-	
 	//position of fielders
 	positions_west = [(0.20, 1.00, -1.00, 0.00, 2),
 					  (0.20, 0.00, -1.00, -1.00, 3),
@@ -270,21 +198,23 @@ where
 					  (1.00, 0.00, -0.20, -1.00, 3),
 					  (1.00, 0.30, -0.20, -0.30, 4),
 					  (0.50, 1.00, -0.60, 0.20, 5),
-					  (0.50, -1.00, -0.60, -0.20, 6),
+					  (0.50, -0.20, -0.60, -1.00, 6),
 					  (0.25, 0.30, -0.75, -0.30, 7),
 					  (0.00, 1.00, -0.80, 0.00, 8), 
 					  (0.00, 0.00, -0.80, -1.00, 9),
 					  (-0.40, 1.00, -1.00, 0.00, 10),
-					  (-0.40, 0.00, -1.00, -1.00, 11)]
+					  (-0.40, 0.00, -1.00, 1.00, 11)]
 	
-	x_max nr =  if (home == West)  (hd [ x2 \\ (x1, y1, x2, y2, n) <- positions_west | n==nr]) (hd [ x1 \\ (x1, y1, x2, y2, n) <- positions_east | n==nr])
+	x_max nr =  if (home == West)  (hd [ x2 \\ (x1, y1, x2, y2, n) <- positions_west | n==nr]) (hd [ x2 \\ (x1, y1, x2, y2, n) <- positions_east | n==nr])
 	
 	y_max nr =  if (home == West)  (hd [ y1 \\ (x1, y1, x2, y2, n) <- positions_west | n==nr]) (hd [ y1 \\ (x1, y1, x2, y2, n) <- positions_east | n==nr])
 	
-	x_min nr = if (home == West)  (hd [ x1 \\ (x1, y1, x2, y2, n) <- positions_west | n==nr]) (hd [ x2 \\ (x1, y1, x2, y2, n) <- positions_east | n==nr])
+	x_min nr = if (home == West)  (hd [ x1 \\ (x1, y1, x2, y2, n) <- positions_west | n==nr]) (hd [ x1 \\ (x1, y1, x2, y2, n) <- positions_east | n==nr])
 	
 	y_min nr = if (home == West)  (hd [ y2 \\ (x1, y1, x2, y2, n) <- positions_west | n==nr]) (hd [ y2 \\ (x1, y1, x2, y2, n) <- positions_east | n==nr])
 	
-	
-
+	i_am_near_the_ball1		= toReal (dist me ball) < (0.40 * toReal field.fwidth)//att
+	i_am_near_the_ball2		= toReal (dist me ball) < (0.30 * toReal field.fwidth)//mid
+	i_am_near_the_ball3		= toReal (dist me ball) < (0.25 * toReal field.fwidth)//fu
+	i_am_near_the_ball4		= toReal (dist me ball) < (0.20 * toReal field.fwidth)//def
 
